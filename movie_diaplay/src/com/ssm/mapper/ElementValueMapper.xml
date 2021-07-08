@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 表示命名空间 -->
+<mapper namespace="com.ssm.mapper.ElementValueMapper">
+
+    <select id="findElementValues" parameterType="elementValue" resultType="elementValue">
+        select * from t_elementValue
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="id!=null and id!=''">
+                    and id =#{id}
+                </when>
+                <when test="movieName!=null and movieName!=''">
+                    and movieName like concat('%',#{movieName},'%')
+                </when>
+                <when test="movieType!=null and movieType!=''">
+                    and movieType like concat('%',#{movieType},'%')
+                </when>
+                <when test="keyWard!=null and keyWard!=''">
+                    and keyWard like concat('%',#{keyWard},'%')
+                </when>
+                <otherwise>
+                    and movieName is not null
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+    <select id="selectElementValues" parameterType="elementValue" resultType="elementValue">
+        select * from t_elementValue
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="id!=null and id!=''">
+                    and id =#{id}
+                </when>
+                <when test="movieName!=null and movieName!=''">
+                    and movieName like concat('%',#{movieName},'%')
+                </when>
+                <when test="movieType!=null and movieType!=''">
+                    and movieType like concat('%',#{movieType},'%')
+                </when>
+                <when test="keyWard!=null and keyWard!=''">
+                    and keyWard like concat('%',#{keyWard},'%')
+                </when>
+                <otherwise>
+                    and movieName is not null
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+
+    <!-- 添加数据 -->
+    <insert id="insertElementValue" parameterType="elementValue">
+    insert into t_elementValue(movieName,movieType,keyWard,positiveCount,negativeCount)
+    values(#{movieName},#{movieType},#{keyWard},#{positiveCount},#{negativeCount})
+    </insert>
+
+    <!--删除数据-->
+    <delete id="deleteElementValue" parameterType="elementValue">
+        delete from t_elementValue
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="movieName!=null and movieName!=''">
+                    and movieName like concat('%',#{movieName},'%')
+                </when>
+            </choose>
+        </trim>
+    </delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 表示命名空间 -->
+<mapper namespace="com.ssm.mapper.PersonMapper">
+    <resultMap id="personMap" type="person">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex" javaType="string"/>
+        <!--一对一结果映射时用JavaType-->
+        <association property="card" javaType="iDCard">
+            <id property="id" column="card_id"/>
+            <result property="code" column="code"/>
+        </association>
+    </resultMap>
+    <!--根据用户信息查询个人信息和身份证信息-->
+    <select id="findPersonById" resultMap="personMap" parameterType="person">
+      select * from t_person p left join t_idcard i
+      on i.id=p.id where p.id=#{id}
+    </select>
+</mapper>

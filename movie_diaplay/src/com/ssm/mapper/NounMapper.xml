@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 表示命名空间 -->
+<mapper namespace="com.ssm.mapper.NounMapper">
+
+    <select id="findNouns" parameterType="noun" resultType="noun">
+        select * from t_noun
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="id!=null and id!=''">
+                    and id=#{id}
+                </when>
+                <when test="type!=null and type!=''">
+                    and type IN('表现要素','幕后要素','技术要素') OR LOCATE(type,#{type})>0
+                </when>
+                <otherwise>
+                    and content is not null
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+</mapper>

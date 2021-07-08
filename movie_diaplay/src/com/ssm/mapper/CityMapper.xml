@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 表示命名空间 -->
+<mapper namespace="com.ssm.mapper.CityMapper">
+
+    <select id="findCitys" parameterType="city" resultType="city">
+        select * from t_city
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="id!=null and id!=''">
+                    and id=#{id}
+                </when>
+                <otherwise>
+                    and cityName is not null
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+</mapper>

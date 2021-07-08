@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 表示命名空间 -->
+<mapper namespace="com.ssm.mapper.CommenterMapper">
+
+    <select id="findCommenters" parameterType="commenter" resultType="commenter">
+        select * from t_commenter
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="commenterName!=null and commenterName!=''">
+                    and commenterName like concat('%',#{commenterName},'%')
+                </when>
+                <when test="liveCity!=null and liveCity!=''">
+                    and liveCity like concat('%',#{liveCity},'%')
+                </when>
+                <when test="joinDate!=null and joinDate!=''">
+                    and joinDate =#{joinDate}
+                </when>
+                <when test="friendCount!=null and friendCount!=''">
+                    and friendCount=#{friendCount}
+                </when>
+                <when test="followerCount!=null and followerCount!=''">
+                    and followerCount=#{followerCount}
+                </when>
+                <otherwise>
+                    and commenterID is not null
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

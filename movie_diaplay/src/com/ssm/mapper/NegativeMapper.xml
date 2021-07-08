@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 表示命名空间 -->
+<mapper namespace="com.ssm.mapper.NegativeMapper">
+
+    <select id="findNegatives" parameterType="negative" resultType="negative">
+        select * from t_negative
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="id!=null and id!=''">
+                    and id=#{id}
+                </when>
+                <otherwise>
+                    and description is not null
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+</mapper>

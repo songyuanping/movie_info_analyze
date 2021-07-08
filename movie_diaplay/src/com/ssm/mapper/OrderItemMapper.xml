@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 表示命名空间 -->
+<mapper namespace="com.ssm.mapper.OrderItemMapper">
+    <!--定义多对多映射-->
+    <resultMap id="orderItemMap" type="order">
+        <id column="id" property="id"/>
+        <result column="number" property="number"/>
+        <result column="user_id" property="user_id"/>
+
+        <collection property="productList" ofType="product">
+            <id property="id" column="pid"/>
+            <result property="name" column="name"/>
+            <result property="price" column="price"/>
+        </collection>
+    </resultMap>
+    <select id="findAllProductsInOrder" parameterType="order" resultMap="orderItemMap">
+        select o.* ,p.id pid,p.name,p.price from t_order o,t_orderitem oi,t_product p
+        where o.id=oi.order_id and p.id=oi.product_id and o.id=#{id}
+    </select>
+</mapper>
