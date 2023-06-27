@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 表示命名空间 -->
+<mapper namespace="com.ssm.mapper.AdministratorMapper">
+
+    <select id="logIn" parameterType="administrator" resultType="administrator">
+        select * from t_administrator
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="userName!=null and userName!=''">
+                    and userName like concat('%',#{userName},'%')
+                </when>
+                <when test="phone!=null and phone!=''">
+                    and phone=#{phone}
+                </when>
+                <when test="phone!=null and phone!=''">
+                    and password like concat('%',#{password},'%')
+                </when>
+            </choose>
+        </trim>
+    </select>
+
+    <!-- 修改数据 -->
+    <update id="updateAdministrator" parameterType="administrator">
+        update t_administrator
+        <set>
+            <!--<if test="userName != null and userName != ''">-->
+                <!--userName=#{userName},-->
+            <!--</if>-->
+            <if test="password != null and password != ''">
+                password=#{password},
+            </if>
+            <if test="email != null and email != ''">
+                email=#{email},
+            </if>
+        </set>
+        where phone=#{phone}
+    </update>
+    <!-- 重置密码-->
+    <update id="resetPassword" parameterType="administrator">
+        update t_administrator
+        <set>
+            <if test="userName != null and userName != ''">
+                userName=#{userName},
+            </if>
+            <if test="password != null and password != ''">
+                password=#{password},
+            </if>
+        </set>
+        where email=#{email} and userName=#{userName}
+    </update>
+    <!--注册用户-->
+    <insert id="register" parameterType="administrator">
+        insert into t_administrator(userName,password,email,phone)
+    values(#{userName},#{password},#{email},#{phone})
+    </insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

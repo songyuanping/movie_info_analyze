@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 表示命名空间 -->
+<mapper namespace="com.ssm.mapper.CustomerMapper">
+    <!--对应于CustomerMapper中的findCustomer-->
+    <select id="findCustomer" parameterType="customer" resultType="customer">
+      select * from t_customer where id=#{id}
+    </select>
+
+    <!-- 通过id查询数据 -->
+    <select id="findById" resultType="com.ssm.pojo.Customer"
+            parameterType="com.ssm.pojo.Customer">
+    			select * from t_customer where id=#{id}
+    	</select>
+    <!-- 模糊查询 -->
+    <select id="findByName" parameterType="String"
+            resultType="com.ssm.pojo.Customer">
+    			select * from t_customer
+    			 where username like '%${username}%'
+    	</select>
+    <!--模糊查询优化-->
+    <select id="findByUsername" parameterType="customer" resultType="customer">
+        <bind name="pattern_username" value="'%'+_parameter.getUsername()+'%'"/>
+        select * from t_customer
+        where username like #{pattern_username}
+    </select>
+    <!--动态模糊查询-->
+    <select id="findByJobsAndPhone" parameterType="customer" resultType="customer">
+        select * from t_customer
+        <trim prefix="where" prefixOverrides="and">
+            <if test="jobs !=null and jobs !=''">
+                and jobs=#{jobs}
+            </if>
+            <if test="phone !=null and phone !=''">
+                and phone=#{phone}
+            </if>
+        </trim>
+    </select>
+
+    <select id="findByColumns" parameterType="customer" resultType="customer">
+        select * from t_customer
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="username!=null and username!=''">
+                    and username like concat('%',#{username},'%')
+                </when>
+                <when test="jobs!=null and jobs!=''">
+                    and jobs=#{jobs}
+                </when>
+                <otherwise>
+                    and phone is not null
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+    <!--批量查询-->
+    <resultMap id="customerMap" type="customer">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="phone" column="phone"/>
+    </resultMap>
+    <select id="findCustomersByIds" parameterType="List"
+            resultMap="customerMap" resultType="customer">
+        select * from t_customer where id in
+        <foreach collection="list" item="id" index="index"
+                 open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <!-- 添加数据 -->
+    <insert id="add" parameterType="com.ssm.pojo.Customer">
+    			insert into t_customer(username,jobs,phone)
+    			values(#{username},#{jobs},#{phone})
+    	</insert>
+    <!-- 修改数据 -->
+    <update id="update" parameterType="com.ssm.pojo.Customer">
+        update t_customer
+        <set>
+            <if test="username != null and username != ''">
+                username=#{username},
+            </if>
+            <if test="jobs != null and jobs != ''">
+                jobs=#{jobs},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone=#{phone}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+    <!-- 删除数据 -->
+    <delete id="delete" parameterType="com.ssm.pojo.Customer">
+    			delete from t_customer where id=#{id}
+    	</delete>
+
+    <select id="findByUsernameAndJobs" parameterType="customer" resultType="customer">
+        select * from t_customer where 1=1
+        <if test="username!=null and username!=''">
+            and username like concat('%',#{username},'%')
+        </if>
+        <if test="jobs!=null and jobs!=''">
+            and jobs=#{jobs}
+        </if>
+    </select>
+</mapper>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

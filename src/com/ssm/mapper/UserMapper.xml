@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 表示命名空间 -->
+<mapper namespace="com.ssm.mapper.UserMapper">
+    <resultMap type="user" id="userMap">
+        <id column="id" property="id" javaType="integer"/>
+        <result column="name" property="name" javaType="string"/>
+        <result column="phone" property="phone" javaType="string"/>
+    </resultMap>
+    <select id="findAll" resultMap="userMap" resultType="user">
+	 				select * from t_user
+	</select>
+<!--定义一对多查询-->
+    <resultMap type="user" id="userOrderMap">
+        <id column="id" property="id" javaType="integer"/>
+        <result column="name" property="name" javaType="string"/>
+        <result column="phone" property="phone" javaType="string"/>
+        <!--ofType属性与javaType属性对应，它用于指定实体对象中集合类属性所包含的元素类型。-->
+        <collection property="orderList" ofType="order">
+            <id property="id" column="oid" />
+            <result property="number" column="number"/>
+            <result property="user_id" column="user_id"/>
+        </collection>
+    </resultMap>
+    <select id="findUserOrder" parameterType="user" resultMap="userOrderMap" resultType="user">
+	 				select u.*,o.id oid,o.number,o.user_id
+	 				from t_user u left join t_order o
+	 				on u.id=o.user_id
+	 				where  u.id=#{id}
+	</select>
+</mapper>

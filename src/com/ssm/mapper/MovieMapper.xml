@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 表示命名空间 -->
+<mapper namespace="com.ssm.mapper.MovieMapper">
+
+    <select id="findMovies" parameterType="movie" resultType="movie">
+        select * from t_movie
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="rank!=null and rank!=''">
+                    and rank=#{rank}
+                </when>
+                <when test="movieName!=null and movieName!=''">
+                    and movieName like concat('%',#{movieName},'%')
+                </when>
+                <when test="actors!=null and actors!=''">
+                    and actors like concat('%',#{actors},'%')
+                </when>
+                <when test="director!=null and director!=''">
+                    and director like concat('%',#{director},'%')
+                </when>
+                <when test="showYear!=null and showYear!=''">
+                    and showYear like concat('%',#{showYear},'%')
+                </when>
+                <when test="movieType!=null and movieType!=''">
+                    and movieType like concat('%',#{movieType},'%')
+                </when>
+                <when test="makeCountry!=null and makeCountry!=''">
+                    and makeCountry like concat('%',#{makeCountry},'%')
+                </when>
+                <when test="filmInfo!=null and filmInfo!=''">
+                    and filmInfo like concat('%',#{filmInfo},'%')
+                </when>
+                <otherwise>
+                    and movieName is not null
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+
+    <resultMap id="movieTypeMap" type="movie">
+        <id property="id" column="id"/>
+        <result property="movieName" column="movieName"/>
+        <result property="movieType" column="movieType"/>
+    </resultMap>
+    <select id="findMovieType" parameterType="movie" resultType="movie">
+        select id,movieName,movieType from t_movie
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="rank!=null and rank!=''">
+                    and rank=#{rank}
+                </when>
+                <when test="movieName!=null and movieName!=''">
+                    and movieName like concat('%',#{movieName},'%')
+                </when>
+                <when test="actors!=null and actors!=''">
+                    and actors like concat('%',#{actors},'%')
+                </when>
+                <when test="director!=null and director!=''">
+                    and director like concat('%',#{director},'%')
+                </when>
+                <when test="showYear!=null and showYear!=''">
+                    and showYear like concat('%',#{showYear},'%')
+                </when>
+                <when test="movieType!=null and movieType!=''">
+                    and movieType like concat('%',#{movieType},'%')
+                </when>
+                <when test="filmInfo!=null and filmInfo!=''">
+                    and filmInfo like concat('%',#{filmInfo},'%')
+                </when>
+                <otherwise>
+                    and movieName is not null
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+
+
+    <resultMap id="movieDirectorMap" type="movie">
+        <id property="id" column="id"/>
+        <result property="movieName" column="movieName"/>
+        <result property="director" column="director"/>
+    </resultMap>
+    <select id="queryDirectors" parameterType="movie" resultType="movie">
+        select id,movieName,director,movieScore from t_movie
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="rank!=null and rank!=''">
+                    and rank=#{rank}
+                </when>
+                <when test="movieName!=null and movieName!=''">
+                    and movieName like concat('%',#{movieName},'%')
+                </when>
+                <when test="actors!=null and actors!=''">
+                    and actors like concat('%',#{actors},'%')
+                </when>
+                <when test="director!=null and director!=''">
+                    and director like concat('%',#{director},'%')
+                </when>
+                <when test="showYear!=null and showYear!=''">
+                    and showYear like concat('%',#{showYear},'%')
+                </when>
+                <when test="movieType!=null and movieType!=''">
+                    and movieType like concat('%',#{movieType},'%')
+                </when>
+                <when test="filmInfo!=null and filmInfo!=''">
+                    and filmInfo like concat('%',#{filmInfo},'%')
+                </when>
+                <otherwise>
+                    and movieName is not null
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+
+
+    <!--批量查询-->
+    <!--<resultMap id="customerMap" type="customer">-->
+    <!--<id property="id" column="id"/>-->
+    <!--<result property="username" column="username"/>-->
+    <!--<result property="phone" column="phone"/>-->
+    <!--</resultMap>-->
+    <!--<select id="findCustomersByIds" parameterType="List"-->
+    <!--resultMap="customerMap" resultType="customer">-->
+    <!--select * from t_customer where id in-->
+    <!--<foreach collection="list" item="id" index="index"-->
+    <!--open="(" separator="," close=")">-->
+    <!--#{id}-->
+    <!--</foreach>-->
+    <!--</select>-->
+    <!--&lt;!&ndash; 添加数据 &ndash;&gt;-->
+    <!--<insert id="add" parameterType="com.ssm.pojo.Customer">-->
+    <!--insert into t_customer(username,jobs,phone)-->
+    <!--values(#{username},#{jobs},#{phone})-->
+    <!--</insert>-->
+    <!--&lt;!&ndash; 修改数据 &ndash;&gt;-->
+    <!--<update id="update" parameterType="com.ssm.pojo.Customer">-->
+    <!--update t_customer-->
+    <!--<set>-->
+    <!--<if test="username != null and username != ''">-->
+    <!--username=#{username},-->
+    <!--</if>-->
+    <!--<if test="jobs != null and jobs != ''">-->
+    <!--jobs=#{jobs},-->
+    <!--</if>-->
+    <!--<if test="phone != null and phone != ''">-->
+    <!--phone=#{phone}-->
+    <!--</if>-->
+    <!--</set>-->
+    <!--where id=#{id}-->
+    <!--</update>-->
+    <!--&lt;!&ndash; 删除数据 &ndash;&gt;-->
+    <!--<delete id="delete" parameterType="com.ssm.pojo.Customer">-->
+    <!--delete from t_customer where id=#{id}-->
+    <!--</delete>-->
+
+    <!--<select id="findByUsernameAndJobs" parameterType="customer" resultType="customer">-->
+    <!--select * from t_customer where 1=1-->
+    <!--<if test="username!=null and username!=''">-->
+    <!--and username like concat('%',#{username},'%')-->
+    <!--</if>-->
+    <!--<if test="jobs!=null and jobs!=''">-->
+    <!--and jobs=#{jobs}-->
+    <!--</if>-->
+    <!--</select>-->
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

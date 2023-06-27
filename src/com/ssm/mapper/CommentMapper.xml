@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 表示命名空间 -->
+<mapper namespace="com.ssm.mapper.CommentMapper">
+
+    <select id="findComments" parameterType="comment" resultType="comment">
+        select * from t_comment
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="movieName!=null and movieName!=''">
+                    and movieName like concat('%',#{movieName},'%')
+                </when>
+                <when test="userName!=null and userName!=''">
+                    and userName like concat('%',#{userName},'%')
+                </when>
+                <when test="comment!=null and comment!=''">
+                    and comment like concat('%',#{comment},'%')
+                </when>
+                <when test="praise!=null and praise!=''">
+                    and praise =#{praise}
+                </when>
+                <when test="score!=null and score!=''">
+                    and score=#{score}
+                </when>
+                <otherwise>
+                    and movieName is not null
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+    <!--批量查询-->
+    <!--<resultMap id="customerMap" type="customer">-->
+    <!--<id property="id" column="id"/>-->
+    <!--<result property="username" column="username"/>-->
+    <!--<result property="phone" column="phone"/>-->
+    <!--</resultMap>-->
+    <!--<select id="findCustomersByIds" parameterType="List"-->
+    <!--resultMap="customerMap" resultType="customer">-->
+    <!--select * from t_customer where id in-->
+    <!--<foreach collection="list" item="id" index="index"-->
+    <!--open="(" separator="," close=")">-->
+    <!--#{id}-->
+    <!--</foreach>-->
+    <!--</select>-->
+    <!--&lt;!&ndash; 添加数据 &ndash;&gt;-->
+    <!--<insert id="add" parameterType="com.ssm.pojo.Customer">-->
+    <!--insert into t_customer(username,jobs,phone)-->
+    <!--values(#{username},#{jobs},#{phone})-->
+    <!--</insert>-->
+    <!--&lt;!&ndash; 修改数据 &ndash;&gt;-->
+    <!--<update id="update" parameterType="com.ssm.pojo.Customer">-->
+    <!--update t_customer-->
+    <!--<set>-->
+    <!--<if test="username != null and username != ''">-->
+    <!--username=#{username},-->
+    <!--</if>-->
+    <!--<if test="jobs != null and jobs != ''">-->
+    <!--jobs=#{jobs},-->
+    <!--</if>-->
+    <!--<if test="phone != null and phone != ''">-->
+    <!--phone=#{phone}-->
+    <!--</if>-->
+    <!--</set>-->
+    <!--where id=#{id}-->
+    <!--</update>-->
+    <!--&lt;!&ndash; 删除数据 &ndash;&gt;-->
+    <!--<delete id="delete" parameterType="com.ssm.pojo.Customer">-->
+    <!--delete from t_customer where id=#{id}-->
+    <!--</delete>-->
+
+    <!--<select id="findByUsernameAndJobs" parameterType="customer" resultType="customer">-->
+    <!--select * from t_customer where 1=1-->
+    <!--<if test="username!=null and username!=''">-->
+    <!--and username like concat('%',#{username},'%')-->
+    <!--</if>-->
+    <!--<if test="jobs!=null and jobs!=''">-->
+    <!--and jobs=#{jobs}-->
+    <!--</if>-->
+    <!--</select>-->
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
